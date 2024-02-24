@@ -146,6 +146,7 @@ mysqli_close($conn);
     <th>รายละเอียด</th>
     <th>รูปภาพ</th>
     <th>แก้ไข</th>
+    <th>ลบสินค้า</th>
 </tr>
 <?php
 include('config/server.php');
@@ -168,6 +169,7 @@ if(isset($_POST['search'])) {
             echo '<td>'.$row['detail'].'</td>';
             echo '<td><img src="image/'.$row['image'].'" width="150px" height="100px"></td>';
             echo '<td> <a href="edit_product.php?id='.$row['pro_id'].'"> Edit </a></td> ';
+            echo '<td> <a href="delete_product.php?id='.$row['pro_id'].'"> ลบ </a></td> ';
             echo '</tr>';
         }
         echo '</div>';

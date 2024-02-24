@@ -20,12 +20,33 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script></head>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="css.css">
+   
     <body>
-    
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var cartItemCount = <?php echo isset($_SESSION["intLine"]) ? $_SESSION["intLine"] : 0; ?>;  
+        document.getElementById("cartItemCount").innerText = cartItemCount;
+        if (cartItemCount > 0) {
+            document.getElementById("cartItemCount").classList.add("bg-danger");
+        } else {
+            document.getElementById("cartItemCount").classList.remove("bg-danger");
+        }
+        var updatedCartItemCount = <?php echo isset($_SESSION["intLine"]) ? $_SESSION["intLine"] : 0; ?>;
+        var itemChanged = <?php echo isset($_SESSION["itemChanged"]) ? $_SESSION["itemChanged"] : 0; ?>;
+        if (itemChanged === +1) {
+            document.getElementById("cartItemCount").innerText = cartItemCount + 1;
+        }
+        if (itemChanged === -1) {
+            document.getElementById("cartItemCount").innerText = updatedCartItemCount;
+        }
+        <?php $_SESSION["itemChanged"] = 0; ?>;
+    });
+</script>
 <nav class="navbar navbar-expand-lg bg-success-subtle">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="/work/img/logo1.png" alt="อัจฉราโรงกลึง" width="150" height="75" >
+        <a href="user.php"><img src="/work/img/logo1.png" alt="อัจฉราโรงกลึง" width="150" height="75" ></a>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -65,12 +86,16 @@
             </form>
         </div>
 
-            <div style="position: relative; display: inline-block; margin-right: 20px; d-flex p-2">
-              <a class="nav-link active" aria-current="page" href="cart.php" style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; position: relative;">
-                <iconify-icon icon="ic:baseline-shopping-cart" style="font-size: 30px;"></iconify-icon>
-                <span class="badge rounded-pill badge-notification bg-danger" style="position: absolute; top: -5px; right: -5px;"></span>
-              </a>
-            </div>
+        <div style="position: relative; display: inline-block; margin-right: 20px; d-flex p-2">
+    <a class="nav-link active" aria-current="page" href="cart.php" style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; position: relative;">
+        <iconify-icon icon="ic:baseline-shopping-cart" style="font-size: 30px;"></iconify-icon>
+        <span class="badge rounded-pill badge-notification bg-danger" id="cartItemCount" style="position: absolute; top: -5px; right: -5px;">0</span>
+    </a>
+</div>
+
+
+
+
             <div style=" width:30px; height:50px; margin-right: 30px; display: flex; align-items: center;">
             <?php
 include('config/server.php');
@@ -119,20 +144,30 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
 } else {
     echo "ไม่ได้เข้าสู่ระบบ";
 }
-
+   
 mysqli_close($conn);
 ?>
+
             </div>
+                  
             <div class="dropdown" style="display: inline-block; margin-right: 20px;">
               <button class="btn btn-secondary rounded-circle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px; padding: 0;">
                 <iconify-icon icon="carbon:user-avatar-filled" width="100%" height="100%" style="border-radius: 50%;"></iconify-icon>
               </button>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                 <li>
-                  <a class="dropdown-item" href="login.php">Logout</a>
+                <a class="dropdown-item" href="H_order.php">รายการสินค้าที่สั่งซื้อแล้ว</a>
                 </li>
+                <li>
+                <a class="dropdown-item" href="edit_user.php">แก้ไขข้อมูลส่วนตัว</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="login.php">Logout</a>
+                </li>
+              
               </ul>
             </div>
+         
           </div>
     </div>
   </nav>
@@ -173,5 +208,13 @@ mysqli_close($conn);
       </tr>
     </table>
   </div>
+  <footer class="foot">   
+    <marquee behavior="" direction="">
+  ติดต่อ/ติดตามสินค้า ได้ที่ LINE ID : @139wwlud Tel : 064-1749954
+  </marquee>
+  </footer>
 </body>
+
 </html>
+
+

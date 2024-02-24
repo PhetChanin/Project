@@ -132,7 +132,20 @@ mysqli_close($conn);
                     <div>
                         <br>
                 </div>
-              
+                <form name="form1" method="post" action="reprot_sale1.php">
+                <div class="row">
+                    <div class="col-sm-2"> 
+                        <input type="date" name="dt1" class="form-control">
+                    </div>
+                    <div class="col-sm-2"> 
+                        <input type="date" name="dt2" class="form-control">
+                    </div>
+                    <div class="col-sm-4">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i>
+                    </button>
+                    </div>
+                </div>
+              </form>
                 <div class="card-body">
                     <table id="datatablesSimple"class="table table-striped"> 
                         <thead>
@@ -148,30 +161,39 @@ mysqli_close($conn);
                                
                             </tr>
                         </thead>
-                            <?php
-                            include('config/server.php');
-                            $sql = "select * from tb_order where order_status='1' order by reg_data DESC";
-                            $total_sum=0;
-                            $result = mysqli_query($conn, $sql);
-                            while ($row = mysqli_fetch_array($result)) {
-                            $total_sum = $total_sum+$row['total_price'];
-                           ?>
-                                <tr>
-                                    <td><?= $row['orderID'] ?></td>
-                                    <td><?= $row['cus_name'] ?></td>
-                                    <td><?= $row['reg_data'] ?></td>
-                                    <td><?= $row['address'] ?></td>
-                                    <td><?= $row['telephone'] ?></td>
-                                    <td><?= $row['total_price'] ?></td>
-                                    
-                                    <td>
-                                       
-                                    </td>
-                                    
-                            <?php
-                            }
-                            mysqli_close($conn)
-                            ?>
+                        <?php
+include('config/server.php');
+$ddt1 = @$_POST['dt1'];
+$ddt2 = @$_POST['dt2'];
+$add_date = date('Y/m/d', strtotime($ddt2 . "+1 days"));
+if (($ddt1 != "") && ($ddt2 != "")) {
+    echo "ค้นหาจากวันที่ $ddt1 ถึง $ddt2";
+    $sql = "select * from tb_order where order_status='2' and reg_data BETWEEN '$ddt1' and '$add_date' order by reg_data DESC";
+} else {
+    $sql = "select * from tb_order where order_status='2' order by reg_data DESC";
+}
+$total_sum = 0;
+$result = mysqli_query($conn, $sql);
+while ($row = mysqli_fetch_array($result)) {
+$total_sum = $total_sum + $row['total_price'];
+?>
+    <tr>
+        <td><?= $row['orderID'] ?></td>
+        <td><?= $row['cus_name'] ?></td>
+        <td><?= $row['reg_data'] ?></td>
+        <td><?= $row['address'] ?></td>
+        <td><?= $row['telephone'] ?></td>
+        <td><?= $row['total_price'] ?></td>
+
+        <td>
+
+        </td>
+
+<?php
+}
+mysqli_close($conn)
+?>
+
                         
                     </table>
                     <div class="text-end"><b>รวมเป็นเงิน<?=number_format($total_sum,2) ?>บาท</b></div>
@@ -189,19 +211,3 @@ mysqli_close($conn);
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-
-        <script>
-    function del(mypage) {
-        var agree = confirm('คุณต้องการยกเลิกใบสั่งซื้อสินค้าหรือไม่');
-        if (agree) {
-            window.location = mypage;
-        }
-    }
-
-    function del1(mypage1) {
-        var agree = confirm('คุณต้องการปรับสถานะการชำระเงินหรือไม่');
-        if (agree) {
-            window.location = mypage1;
-        }
-    }
-</script>

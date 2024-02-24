@@ -22,8 +22,9 @@ VALUES ('$p_name','$typeID','$price','$num','$detail','$new_image_name')";
 $result= mysqli_query($conn,$sql);
 if($result){ 
     echo"<script> alert('บันทึกข้อมูลเรียบร้อย');  </script>";
-    echo"<script> windowloccation='show_product.php';  </script>";
+    echo"<script> windowloccation='admin.php';  </script>";
 }else{
     echo"<script> alert('ไม่สามารถบันทึกข้อมูลได้');  </script>";
-} echo "<a href='show_product.php'>ไปหน้า Devdit</a>"
+}
+
 ?>

@@ -150,7 +150,7 @@ mysqli_close($conn);
                                 <th>ราคารวมสุทธิ</th>
                                 <th>วันที่สั่งซื้อ</th>
                                 <th>สถานะการสั่งซื้อ</th>
-                                <th>ยกเลิกการสั่งซื้อ</th>
+                               
                             </tr>
                         </thead>
                             <?php
@@ -178,8 +178,7 @@ mysqli_close($conn);
                                         }
                                         ?>
                                     </td>
-                                    <td><a href="cancel_order.php?id=<?= $row['orderID'] ?>" class="btn btn-danger"
-                                    onclick="del(this.href); return false;">ยกเลิก</a></td>
+                                   
                                 </tr>
                             <?php
                             }

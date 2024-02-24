@@ -17,10 +17,30 @@ require_once 'config/db.php';
 
 </head>
 <body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var cartItemCount = <?php echo isset($_SESSION["intLine"]) ? $_SESSION["intLine"] : 0; ?>;  
+        document.getElementById("cartItemCount").innerText = cartItemCount;
+        if (cartItemCount > 0) {
+            document.getElementById("cartItemCount").classList.add("bg-danger");
+        } else {
+            document.getElementById("cartItemCount").classList.remove("bg-danger");
+        }
+        var updatedCartItemCount = <?php echo isset($_SESSION["intLine"]) ? $_SESSION["intLine"] : 0; ?>;
+        var itemChanged = <?php echo isset($_SESSION["itemChanged"]) ? $_SESSION["itemChanged"] : 0; ?>;
+        if (itemChanged === +1) {
+            document.getElementById("cartItemCount").innerText = cartItemCount + 1;
+        }
+        if (itemChanged === -1) {
+            document.getElementById("cartItemCount").innerText = updatedCartItemCount;
+        }
+        <?php $_SESSION["itemChanged"] = 0 ?>
+    });
+</script>
 <nav class="navbar navbar-expand-lg bg-success-subtle">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="/work/img/logo1.png" alt="อัจฉราโรงกลึง" width="150" height="75" >
+        <a href="user.php"><img src="/work/img/logo1.png" alt="อัจฉราโรงกลึง" width="150" height="75" ></a>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -63,7 +83,7 @@ require_once 'config/db.php';
             <div style="position: relative; display: inline-block; margin-right: 20px; d-flex p-2">
               <a class="nav-link active" aria-current="page" href="cart.php" style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; position: relative;">
                 <iconify-icon icon="ic:baseline-shopping-cart" style="font-size: 30px;"></iconify-icon>
-                <span class="badge rounded-pill badge-notification bg-danger" style="position: absolute; top: -5px; right: -5px;"></span>
+                <span class="badge rounded-pill badge-notification bg-danger" id="cartItemCount" style="position: absolute; top: -5px; right: -5px;" >></span>
               </a>
             </div>
             <div style=" width:30px; height:50px; margin-right: 30px; display: flex; align-items: center;">
@@ -124,13 +144,20 @@ mysqli_close($conn);
               </button>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                 <li>
-                  <a class="dropdown-item" href="login.php">Logout</a>
+                <a class="dropdown-item" href="H_order.php">รายการสินค้าที่สั่งซื้อแล้ว</a>
                 </li>
+                <li>
+                <a class="dropdown-item" href="edit_user.php">แก้ไขข้อมูลส่วนตัว</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="login.php">Logout</a>
+                </li>
+              
               </ul>
             </div>
           </div>
     </div>
-  </nav> 
+  </nav>
 
 
     <div class = "container" >
@@ -144,60 +171,63 @@ mysqli_close($conn);
 <?php
 if (isset($_SESSION["intLine"]) && $_SESSION["intLine"] >= 0) {
 ?>
-    <table class = "table table-hover" >
-        <tr>
-            <th>ลำดับที่</th>
-            <th>ชื่อสินค้า</th>
-            <th>ราคา</th>
-            <th>จำนวน</th>
-            <th>ราคารวม</th>
-            <th>เพิ่ม - ลด</th>
-            <th>ลบ</th>
-        </tr>
-        <?php
-        include('config/server.php');
-        $sumPrice = 0;
-        $sumPriceProduct = 0;
-        for ($i = 0; $i <= (int)$_SESSION["intLine"]; $i++) {
-            if ($_SESSION["strProductID"][$i] != "") {
-                $sql1 = "select * from product where pro_id = '" . $_SESSION["strProductID"][$i] . "'";
-                $result1 = mysqli_query($conn, $sql1);
-                $row_pro = mysqli_fetch_array($result1);
-                $Total = $_SESSION["strQty"][$i];
-                $sum = $Total * $row_pro['price'];
-                $sumPrice += $sum;
-                $sumPriceProduct = $sumPrice + 100;
-                $_SESSION["sumPriceProduct"] = $sumPriceProduct;
-        ?>
+    <table class="table table-hover">
     <tr>
-    <td><?= $i + 1 ?></td>
-                    <td><img src="../work/image/<?= $row_pro['image'] ?>" width="80" height="100" class="border"><?= $row_pro['pro_name'] ?></td>
-                    <td><?= $row_pro['price'] ?></td>
-                    <td><?= $_SESSION["strQty"][$i] ?></td>
-                    <td><?= $sum ?></td>
-                    <td>
-                        <a href="order.php?id=<?= $row_pro['pro_id'] ?>" class="btn btn-outline-primary">+</a>
-                        <?php if ($_SESSION["strQty"][$i] > 1) { ?>
-                            <a href="order_del.php?id=<?= $row_pro['pro_id'] ?>" class="btn btn-outline-primary">-</a>
-                        <?php } ?>
-                    </td>
-                    <td><a href="pro_delete.php?Line=<?= $i ?>"><img src="img/delete.png" width="30"></a></td>
-                </tr>
-        <?php
-            }
-        }
-        ?>
+        <th>ลำดับที่</th>
+        <th>ชื่อสินค้า</th>
+        <th>ราคา</th>
+        <th>จำนวนสินค้าที่สั่ง</th>
+        <th>สินค้าในสต็อก</th>
+        <th>ราคารวม</th>
+        <th>เพิ่ม - ลด</th>
+        <th>ลบ</th>
+    </tr>
 
-<tr>
-    <td class="text-end" colspan="4">ค่าจัดส่ง</td>
-    <td class="text-center">100</td>
-    <td>บาท</td>
-</tr>
-<tr>
-    <td class="text-end" colspan="4">รวมเป็นเงิน</td>
-    <td class="text-center"><?= $sumPriceProduct ?></td>
-    <td>บาท</td>
-</tr>
+    <?php
+    include('config/server.php');
+    $sumPrice = 0;
+    $sumPriceProduct = 0;
+    $displayOrder = 1;
+    for ($i = 0; $i <= (int)$_SESSION["intLine"]; $i++) {
+        if (isset($_SESSION["strProductID"][$i]) && $_SESSION["strProductID"][$i] != "") {
+            $sql1 = "SELECT * FROM product WHERE pro_id = '" . $_SESSION["strProductID"][$i] . "'";
+            $result1 = mysqli_query($conn, $sql1);
+            $row_pro = mysqli_fetch_array($result1);
+            $Total = $_SESSION["strQty"][$i];
+            $sum = $Total * $row_pro['price'];
+            $sumPrice += $sum;
+            $sumPriceProduct = $sumPrice + 100;
+            $_SESSION["sumPriceProduct"] = $sumPriceProduct;
+    ?>
+            <tr>
+                <td><?= $displayOrder++ ?></td>
+                <td><img src="../work/image/<?= $row_pro['image'] ?>" width="80" height="100" class="border"><?= $row_pro['pro_name'] ?></td>
+                <td><?= $row_pro['price'] ?></td>
+                <td><?= $_SESSION["strQty"][$i] ?></td>
+                <td><?= $row_pro['amount'] ?> </td>
+                <td><?= $sum ?></td>
+                <td>
+                    <a href="order.php?id=<?= $row_pro['pro_id']?>& amount=<?= $row_pro['amount'] ?>" class="btn btn-outline-primary">+</a>
+                    <?php if ($_SESSION["strQty"][$i] > 1) { ?>
+                        <a href="order_del.php?id=<?= $row_pro['pro_id'] ?>" class="btn btn-outline-primary">-</a>
+                    <?php } ?>
+                </td>
+                <td><a href="pro_delete.php?Line=<?= $i ?>"><img src="img/delete.png" width="30"></a></td>
+            </tr>
+    <?php
+        }
+    }
+    ?>
+    <tr>
+        <td class="text-end" colspan="4">ค่าจัดส่ง</td>
+        <td class="text-center">100</td>
+        <td>บาท</td>
+    </tr>
+    <tr>
+        <td class="text-end" colspan="4">รวมเป็นเงิน</td>
+        <td class="text-center"><?= $sumPriceProduct ?></td>
+        <td>บาท</td>
+    </tr>
 </table>
     <div style= "text-align:right">
     <a href="user.php"><button type = "button" class="btn btn-outline-secondary">เลือกสินค้า</button></a>

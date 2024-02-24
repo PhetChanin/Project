@@ -171,4 +171,10 @@ mysqli_close($conn);
 
 
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var cartItemCount = <?php echo isset($_SESSION["intLine"]) ? $_SESSION["intLine"] + 1 : 0; ?>;
+        document.getElementById("cartItemCount").innerText = cartItemCount;
+    });
+</script>
 </html>

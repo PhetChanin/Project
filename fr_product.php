@@ -51,7 +51,7 @@ session_start();
     <label> รายละเอียด: </label>
     <input type = "text" name = "detail" class = "form-control" placeholder = "รายละเอียด..." required> <br>
     <label> รูปภาพ: </label>
-    <input type = "file" name = "file1" required> <br>/
+    <input type = "file" name = "file1" required> <br>
 
     <button type="Submit" class="bg-success-subtle">Submit</button>
 

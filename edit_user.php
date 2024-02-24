@@ -1,23 +1,39 @@
-<?php 
-session_start();
- include('config/server.php'); 
+<?php
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+include 'config/server.php';
+
+$ids = isset($_GET['id']) ? $_GET['id'] : null;
+
+if ($ids !== null) {
+    $sql = "SELECT * FROM users WHERE id=?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $ids);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+}
+
+mysqli_close($conn);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show Product</title>
-     <!-- Bootstrap CSS -->
-     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" >
-     <!-- Option 1: Bootstrap Bundle with Popper -->
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <title>User Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script></head>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-
-</head>
-<body>
+    <link rel="stylesheet" href="css.css">
+    
+    <body>
 <nav class="navbar navbar-expand-lg bg-success-subtle">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
@@ -71,18 +87,18 @@ session_start();
             <?php
 include('config/server.php');
 
-// Ensure session_start() is called only once at the beginning
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Check if the user is logged in and if the user ID is set in the session
+
 if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
-    // Get the user ID from the session
+    
     if (isset($_SESSION['user_id'])) {
         $userId = $_SESSION['user_id'];
 
-        // Use prepared statements to prevent SQL injection
+        
         $sql = "SELECT * FROM users WHERE id = ?";
 
         $stmt = mysqli_prepare($conn, $sql);
@@ -115,10 +131,12 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
 } else {
     echo "ไม่ได้เข้าสู่ระบบ";
 }
-
+   
 mysqli_close($conn);
 ?>
+
             </div>
+                  
             <div class="dropdown" style="display: inline-block; margin-right: 20px;">
               <button class="btn btn-secondary rounded-circle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px; padding: 0;">
                 <iconify-icon icon="carbon:user-avatar-filled" width="100%" height="100%" style="border-radius: 50%;"></iconify-icon>
@@ -136,89 +154,35 @@ mysqli_close($conn);
               
               </ul>
             </div>
+         
           </div>
     </div>
   </nav>
-  <div class="container"> 
-  <div class="alert bg-success-subtle h4 text-center mb-4 mt-4" role="alert">
- แสดงข้อมูลสินค้า
+  <<div class="container">
+    <div class="row">
+        <div class="col-sm-6"> 
+            <div class="h4 text-center alert alert-success mb-4 mt-4" role="alert">แก้ไขข้อมูลสมาชิก</div>
+
+            <form method="POST" action="Update_user.php">
+        <label>Username:</label>
+        <input type="text" name="username" class="form-control" value="<?= isset($row['username']) ? $row['username'] : '' ?>"> <br>
+
+        <label>ชื่อ:</label>
+        <input type="text" name="firstname" class="form-control" value="<?= isset($row['firstname']) ? $row['firstname'] : '' ?>" > <br>
+
+        <label>นามสกุล:</label>
+        <input type="text" name="lastname" class="form-control" value="<?= isset($row['lastname']) ? $row['lastname'] : '' ?>" > <br>
+
+        <label>Email:</label>
+        <input type="text" name="email" class="form-control" value="<?= isset($row['email']) ? $row['email'] : '' ?>"> <br>
+
+        <input type="submit" value="Update" class="btn btn-success">
+        <a href="user.php" class="btn btn-danger">Cancel</a>
+    </form>
+
+        </div>
+    </div>
 </div>
 
-<table class="table table-bordered border-primary">
-<tr> 
-    <th>รหัสสินค้า</th>
-    <th>ชื่อสินค้า</th>
-    <th>ประเภท</th>
-    <th>ราคา</th>
-    <th>จำนวน</th>
-    <th>รายละเอียด</th>
-    <th>รูปภาพ</th>
-</tr>
-<?php
-include('config/server.php');
-
-if (isset($_POST['search'])) {
-    $search_value = $_POST['search'];
-
-    $sql = "SELECT * FROM product WHERE pro_name LIKE '%$search_value%' ORDER BY pro_id";
-    $result = mysqli_query($conn, $sql);
-
-    if (mysqli_num_rows($result) > 0) {
-        echo '<div class="row">';
-        while ($row = mysqli_fetch_array($result)) {
-            echo '<tr>';
-            echo '<td>' . $row['pro_id'] . '</td>';
-            echo '<td>' . $row['pro_name'] . '</td>';
-            echo '<td>' . $row['type_id'] . '</td>';
-            echo '<td>' . $row['price'] . '</td>';
-            echo '<td>' . $row['amount'] . '</td>';
-            echo '<td>' . $row['detail'] . '</td>';
-            echo '<td><img src="image/' . $row['image'] . '" width="150px" height="100px"></td>';
-            echo '</tr>';
-        }
-        echo '</div>';
-    } else {
-        echo "ไม่พบสินค้าที่ค้นหา";
-    }
-} else {
-    // If there's no search value, display all products
-    $sql = "SELECT * FROM product ORDER BY pro_id";
-    $result = mysqli_query($conn, $sql);
-
-    if (mysqli_num_rows($result) > 0) {
-        echo '<div class="row">';
-        while ($row = mysqli_fetch_array($result)) {
-            echo '<tr>';
-            echo '<td>' . $row['pro_id'] . '</td>';
-            echo '<td>' . $row['pro_name'] . '</td>';
-            echo '<td>' . $row['type_id'] . '</td>';
-            echo '<td>' . $row['price'] . '</td>';
-            echo '<td>' . $row['amount'] . '</td>';
-            echo '<td>' . $row['detail'] . '</td>';
-            echo '<td><img src="image/' . $row['image'] . '" width="150px" height="100px"></td>';
-            echo '</tr>';
-        }
-        echo '</div>';
-    } else {
-        echo "ไม่มีสินค้าทั้งหมด";
-    }
-}
-
-mysqli_close($conn);
-?>
-
-</teble> 
-    
- 
-  </div>   
-
-
-
-</body>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var cartItemCount = <?php echo isset($_SESSION["intLine"]) ? $_SESSION["intLine"] + 1 : 0; ?>;
-        document.getElementById("cartItemCount").innerText = cartItemCount;
-    });
-</script>
-</html>
+  </body>
+  </html>

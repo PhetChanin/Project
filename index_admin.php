@@ -29,6 +29,7 @@ $row4=mysqli_fetch_array($hand4);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="css.css">
   </head>
     <body class="sb-nav-fixed">
     <nav class="navbar navbar-expand-lg bg-success-subtle">
@@ -236,6 +237,10 @@ mysqli_close($conn);
                 
             </div>
         </div>
-       
+        <footer class="foot">   
+    <marquee behavior="" direction="">
+  ติดต่อ/ติดตามสินค้า ได้ที่ LINE ID : @139wwlud Tel : 064-1749954
+  </marquee>
+  </footer>
     </body>
     </html>

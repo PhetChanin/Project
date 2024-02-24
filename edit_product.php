@@ -26,7 +26,7 @@ $rs=mysqli_fetch_array($result);
 <div class="alert bg-success-subtle h4 text-center mb-4 mt-4" role="alert">
  แก้ไขข้อมูลสินค้า
 </div>
-<form name = "form1" method = "post" action= "update_product.php" enctype = "multipart/form-data" >
+<form name = "form1" method = "post" action= "#" enctype = "multipart/form-data" >
     <label> รหัสสินค้าสินค้า: </label>
     <input type = "text" name = "proid" class = "form-control"  value =<?=$rs['pro_id']?>>   
     <label> ชื่อสินค้า: </label>
