@@ -18,31 +18,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script></head>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  </head>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <link rel="stylesheet" href="css.css">
-   
     <body>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var cartItemCount = <?php echo isset($_SESSION["intLine"]) ? $_SESSION["intLine"] : 0; ?>;  
-        document.getElementById("cartItemCount").innerText = cartItemCount;
-        if (cartItemCount > 0) {
-            document.getElementById("cartItemCount").classList.add("bg-danger");
-        } else {
-            document.getElementById("cartItemCount").classList.remove("bg-danger");
-        }
-        var updatedCartItemCount = <?php echo isset($_SESSION["intLine"]) ? $_SESSION["intLine"] : 0; ?>;
-        var itemChanged = <?php echo isset($_SESSION["itemChanged"]) ? $_SESSION["itemChanged"] : 0; ?>;
-        if (itemChanged === +1) {
-            document.getElementById("cartItemCount").innerText = cartItemCount + 1;
-        }
-        if (itemChanged === -1) {
-            document.getElementById("cartItemCount").innerText = updatedCartItemCount;
-        }
-        <?php $_SESSION["itemChanged"] = 0; ?>;
-    });
-</script>
+      
 <nav class="navbar navbar-expand-lg bg-success-subtle">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
@@ -89,7 +70,7 @@
         <div style="position: relative; display: inline-block; margin-right: 20px; d-flex p-2">
     <a class="nav-link active" aria-current="page" href="cart.php" style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; position: relative;">
         <iconify-icon icon="ic:baseline-shopping-cart" style="font-size: 30px;"></iconify-icon>
-        <span class="badge rounded-pill badge-notification bg-danger" id="cartItemCount" style="position: absolute; top: -5px; right: -5px;">0</span>
+        <span class="badge rounded-pill badge-notification bg-danger" id="cartItemCount" style="position: absolute; top: -5px; right: -5px;"></span>
     </a>
 </div>
 

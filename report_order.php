@@ -31,10 +31,11 @@ include('config/server.php');
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            เมนู
+              เมนู
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="index_admin.php">Product</a></li>
+              <li><a class="dropdown-item" href="show_product.php">แก้ไขสินค้า</a></li>
               <li><a class="dropdown-item" href="reprot_sale1.php">รายงานการสั่งซื้อ</a></li>
             </ul>
           </li>
@@ -58,7 +59,6 @@ include('config/server.php');
             </form>
         </div>
 
-      
             <div style=" width:30px; height:50px; margin-right: 50px; display: flex; align-items: center;">
             <?php
 include('config/server.php');
@@ -136,6 +136,7 @@ mysqli_close($conn);
                     <a href = "report_order_yes.php"><button type="button" class="btn btn-outline-success ">ชำระเงินแล้ว</button></a>
                     <a href = "report_order.php"><button type="button" class="btn btn-outline-success">ยังไม่ชำระเงิน</button></a>
                     <a href = "report_order_no.php"><button type="button" class="btn btn-outline-success">ยกเลิกใบสั่งซื้อ</button></a>
+                    <a href = "index_admin.php"><button type="button" class="btn btn-outline-success ">กลับหน้าแรก</button></a>
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple"class="table table-striped"> 

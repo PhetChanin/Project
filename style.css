@@ -6,6 +6,7 @@
 body {
     font-size: 120%;
     background: #f8f8f8;
+    
 }
 
 .header {
@@ -18,6 +19,10 @@ body {
     border-bottom: none; 
     border-radius: 10px 10px 0px 0px; 
     padding: 20px;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    display: flex;
 }
 
 form, .content {

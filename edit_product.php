@@ -42,8 +42,7 @@ $rs=mysqli_fetch_array($result);
     
 
     ?>
-
-     <option value="<?=$row['type_id']?>"><?=$row['type_name']?></option>
+    <option value="<?=$row['type_id']?>"><?=$row['type_name']?></option>
     <?php
     }
     mysqli_close($conn);
@@ -60,7 +59,7 @@ $rs=mysqli_fetch_array($result);
     <img src= "image/<?=$rs['image']?>" width = "120">
     <input type = "file" name = "file1" required> <br>
     <input type = "hidden" name = "txting" class = "form-control" value =<?=$rs['image']?>>
-    <button type="Submit" class="bg-success-subtle">Uudate</button>
+    <button type="Submit" class="bg-success-subtle">Update</button>
     <input class="bg-success-subtle" type="reset" value="Cancel">
     
 </form>        

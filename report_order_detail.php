@@ -17,7 +17,7 @@ $ids=$_GET['id'];
   </head>
     <body class="sb-nav-fixed">
      
-<nav class="navbar navbar-expand-lg bg-success-subtle">
+    <nav class="navbar navbar-expand-lg bg-success-subtle">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <img src="/work/img/logo1.png" alt="อัจฉราโรงกลึง" width="150" height="75" >
@@ -32,15 +32,13 @@ $ids=$_GET['id'];
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            เมนู
+              เมนู
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="index_admin.php">Product</a></li>
               <li><a class="dropdown-item" href="reprot_sale1.php">รายงานการสั่งซื้อ</a></li>
             </ul>
           </li>
-        
-
           <?php
             include('config/server.php'); 
             $sql="SELECT * FROM product ORDER BY pro_name ";
@@ -61,9 +59,8 @@ $ids=$_GET['id'];
             </form>
         </div>
 
-          
-<div style=" width:30px; height:50px; margin-right: 30px; display: flex; align-items: center;">
-<?php
+            <div style=" width:30px; height:50px; margin-right: 50px; display: flex; align-items: center;">
+            <?php
 include('config/server.php');
 
 // Ensure session_start() is called only once at the beginning
@@ -113,7 +110,6 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
 
 mysqli_close($conn);
 ?>
- </div>
             </div>
             <div class="dropdown" style="display: inline-block; margin-right: 20px;">
               <button class="btn btn-secondary rounded-circle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px; padding: 0;">
@@ -177,8 +173,6 @@ mysqli_close($conn);
                 <tfoot>
                  
                   <th >รูปสลิป</th>
-                  
-                 
                   <td><img src ="image1/<?=$row['image1']?>" width = "150px" hieght = "200px" > <br></td>
                   
                  </tfoot>

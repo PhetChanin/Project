@@ -47,15 +47,14 @@ $row4=mysqli_fetch_array($hand4);
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            เมนู
+              เมนู
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="index_admin.php">Product</a></li>
+              <li><a class="dropdown-item" href="show_product.php">แก้ไขสินค้า</a></li>
               <li><a class="dropdown-item" href="reprot_sale1.php">รายงานการสั่งซื้อ</a></li>
             </ul>
           </li>
-        
-
           <?php
             include('config/server.php'); 
             $sql="SELECT * FROM product ORDER BY pro_name ";
@@ -76,22 +75,22 @@ $row4=mysqli_fetch_array($hand4);
             </form>
         </div>
 
-       
-            </div>
             <div style=" width:30px; height:50px; margin-right: 50px; display: flex; align-items: center;">
             <?php
 include('config/server.php');
 
+// Ensure session_start() is called only once at the beginning
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-// ตรวจสอบว่าผู้ใช้เข้าสู่ระบบหรือไม่ หรือว่า ID ของผู้ใช้ถูกตั้งค่าใน session หรือไม่
+
+// Check if the user is logged in and if the user ID is set in the session
 if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
-    // ดึง ID ของผู้ใช้จาก session
+    // Get the user ID from the session
     if (isset($_SESSION['user_id'])) {
         $userId = $_SESSION['user_id'];
 
-        // ใช้ prepared statements เพื่อป้องกันการฉีกขาด SQL injection
+        // Use prepared statements to prevent SQL injection
         $sql = "SELECT * FROM users WHERE id = ?";
 
         $stmt = mysqli_prepare($conn, $sql);
@@ -105,9 +104,9 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
             if ($result && mysqli_num_rows($result) > 0) {
                 echo '<div class="row">';
                 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                    echo '<div>';
-                    echo '<p>' . $row['firstname'] . ' ' . $row['lastname'] . '</p>';
-                    echo '</div>';
+                    echo '<tr>';
+                    echo '<td>' . $row['firstname'] . '</td>';
+                    echo '<td>' . $row['lastname'] . '</td>';
                 }
                 echo '</div>';
             } else {

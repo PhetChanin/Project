@@ -39,6 +39,7 @@
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="index_admin.php">Product</a></li>
+              <li><a class="dropdown-item" href="show_product.php">แก้ไขสินค้า</a></li>
               <li><a class="dropdown-item" href="reprot_sale1.php">รายงานการสั่งซื้อ</a></li>
             </ul>
           </li>

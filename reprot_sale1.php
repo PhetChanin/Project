@@ -128,7 +128,7 @@ mysqli_close($conn);
             <div class="card mb-4">
                 <div class="card-header">
                     
-                    <h4 class="alert alert-danger">รายงานการสั่งซื้อ </h4>
+                    <h4 class="alert alert-danger">รายงานสินค้าที่ชำระเงินแล้ว</h4>
                     <div>
                         <br>
                 </div>
@@ -141,7 +141,7 @@ mysqli_close($conn);
                         <input type="date" name="dt2" class="form-control">
                     </div>
                     <div class="col-sm-4">
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i>
+                    <button type="submit" class="btn btn-primary"><img src="/work/img/search.png" alt="" width="16" height="16"></i>
                     </button>
                     </div>
                 </div>

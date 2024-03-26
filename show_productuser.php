@@ -181,7 +181,7 @@ if (isset($_POST['search'])) {
         echo "ไม่พบสินค้าที่ค้นหา";
     }
 } else {
-    // If there's no search value, display all products
+    
     $sql = "SELECT * FROM product ORDER BY pro_id";
     $result = mysqli_query($conn, $sql);
 

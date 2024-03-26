@@ -34,15 +34,14 @@ require_once 'config/db.php';
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            เมนู
+              เมนู
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="index_admin.php">Product</a></li>
+              <li><a class="dropdown-item" href="show_product.php">แก้ไขสินค้า</a></li>
               <li><a class="dropdown-item" href="reprot_sale1.php">รายงานการสั่งซื้อ</a></li>
             </ul>
           </li>
-        
-
           <?php
             include('config/server.php'); 
             $sql="SELECT * FROM product ORDER BY pro_name ";
@@ -63,9 +62,8 @@ require_once 'config/db.php';
             </form>
         </div>
 
-            
-<div style=" width:30px; height:50px; margin-right: 30px; display: flex; align-items: center;">
-<?php
+            <div style=" width:30px; height:50px; margin-right: 50px; display: flex; align-items: center;">
+            <?php
 include('config/server.php');
 
 // Ensure session_start() is called only once at the beginning
@@ -115,7 +113,6 @@ if (isset($_SESSION['user_login']) || isset($_SESSION['admin_login'])) {
 
 mysqli_close($conn);
 ?>
- </div>
             </div>
             <div class="dropdown" style="display: inline-block; margin-right: 20px;">
               <button class="btn btn-secondary rounded-circle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px; padding: 0;">
@@ -177,10 +174,36 @@ if(isset($_POST['search'])) {
     } else {
         echo "ไม่พบสินค้าที่ค้นหา";
     }
+  } else {
+    
+    $sql = "SELECT * FROM product ORDER BY pro_id";
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        echo '<div class="row">';
+        while ($row = mysqli_fetch_array($result)) {
+            echo '<tr>';
+            echo '<td>' . $row['pro_id'] . '</td>';
+            echo '<td>' . $row['pro_name'] . '</td>';
+            echo '<td>' . $row['type_id'] . '</td>';
+            echo '<td>' . $row['price'] . '</td>';
+            echo '<td>' . $row['amount'] . '</td>';
+            echo '<td>' . $row['detail'] . '</td>';
+            echo '<td><img src="image/' . $row['image'] . '" width="150px" height="100px"></td>';
+            echo '<td> <a href="edit_product.php?id='.$row['pro_id'].'"> Edit </a></td> ';
+            echo '<td> <a href="delete_product.php?id='.$row['pro_id'].'"> ลบ </a></td> ';
+            echo '</tr>';
+            echo '</tr>';
+        }
+        echo '</div>';
+    } else {
+        echo "ไม่มีสินค้าทั้งหมด";
+    }
 }
 
 mysqli_close($conn);
 ?>
+
 </table> 
     
   </div>   
